@@ -1,5 +1,9 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">ConnecTattoo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+=======
+    <string name="app_name">connectattoo.android</string>
+>>>>>>> f55eca2a006e54a199b8e95e16f25fbb244bddf3
 </resources>

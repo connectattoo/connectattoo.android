@@ -1,15 +1,12 @@
-
 name: Firebase App Distribution
 
 on:
-  push:
+  pull_request:
     branches: [ "develop" ]
-#  pull_request:
-#    branches: [ "develop" ]
 
 jobs:
   build:
-
+    name: Firebase App Distribution - Debug
     runs-on: ubuntu-latest
 
     steps:

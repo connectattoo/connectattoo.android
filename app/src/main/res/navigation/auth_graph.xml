@@ -58,4 +58,5 @@
         android:name="br.com.connectattoo.ui.home.HomeUserFragment"
         android:label="fragment_home_user"
         tools:layout="@layout/fragment_home_user" />
+
 </navigation>

@@ -7,6 +7,8 @@
     tools:context=".ui.search.UserSearchFragment"
     android:background="@color/black100"
     android:paddingTop="20dp"
+    android:paddingStart="22dp"
+    android:paddingEnd="22dp"
     android:id="@+id/fragment_user_search">
 
     <TextView

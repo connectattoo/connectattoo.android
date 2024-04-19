@@ -65,7 +65,7 @@
     <fragment
         android:id="@+id/userSearchFragment"
         android:name="br.com.connectattoo.ui.search.UserSearchFragment"
-        android:label="fragment_user_search"
+        android:label="@string/txt_explore"
         tools:layout="@layout/fragment_user_search"/>
 
 </navigation>

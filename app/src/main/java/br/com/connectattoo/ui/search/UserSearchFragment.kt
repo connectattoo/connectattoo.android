@@ -1,6 +1,5 @@
 package br.com.connectattoo.ui.search
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,21 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
 import br.com.connectattoo.R
 import br.com.connectattoo.adapter.UserSearchAdapter
-import br.com.connectattoo.databinding.FragmentUserSearchBinding
 import com.google.android.material.search.SearchView
 
 class UserSearchFragment : Fragment() {
     private lateinit var viewModel: UserSearchViewModel
-
+    private val adapter = UserSearchAdapter(context, listOf())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        //Use the ViewModel
 
     }
 
@@ -34,16 +28,20 @@ class UserSearchFragment : Fragment() {
         val searchView = view?.findViewById<SearchView>(R.id.search_user)
         searchView?.visibility = View.VISIBLE
 
-        val recyclerSearch = view?.findViewById<RecyclerView>(R.id.recycler_images_search)
+        val recyclerSearch = requireView().findViewById<RecyclerView>(R.id.recycler_images_search)
 
-        recyclerSearch?.layoutManager = GridLayoutManager(context,3)
+        recyclerSearch.layoutManager = GridLayoutManager(context,3)
+        recyclerSearch.adapter = adapter
 
-        recyclerSearch?.adapter = UserSearchAdapter()
-
+        observe()
 
         return binding
     }
 
-
+    private fun observe() {
+        viewModel.imagesTattooUserSearch2.observe(viewLifecycleOwner) {
+            adapter.updateImages(it)
+        }
+    }
 
 }

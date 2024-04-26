@@ -22,6 +22,6 @@ class UserSearchViewModel : ViewModel() {
         "https://drive.google.com/file/d/1sEmmdBe2CfQziTmrSz0mVkcp85SfBIyz/view?usp=drive_link"
     ))
 
-    val _imagesTattooUserSearch: LiveData<List<String>> = imagesTattooUserSearch
+    val imagesTattooUserSearch2: LiveData<List<String>> = imagesTattooUserSearch
 
 }

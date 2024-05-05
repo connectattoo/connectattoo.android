@@ -1,18 +1,16 @@
 package br.com.connectattoo.ui.search
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import br.com.connectattoo.R
 import br.com.connectattoo.adapter.UserSearchAdapter
-import com.google.android.material.search.SearchView
+import br.com.connectattoo.databinding.FragmentUserSearchBinding
+import br.com.connectattoo.ui.BaseFragment
 
-class UserSearchFragment : Fragment() {
+class UserSearchFragment : BaseFragment<FragmentUserSearchBinding>() {
     private lateinit var viewModel: UserSearchViewModel
     private val adapter = UserSearchAdapter(context, listOf())
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,27 +18,31 @@ class UserSearchFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        viewModel = ViewModelProvider(this).get(UserSearchViewModel::class.java)
-        val binding = inflater.inflate(R.layout.fragment_user_search, container, false)
-        val searchView = view?.findViewById<SearchView>(R.id.search_user)
-        searchView?.visibility = View.VISIBLE
+    override fun setupViews() {
+        val searchView = binding.fragmentUserSearch
+        searchView.visibility = View.VISIBLE
 
-        val recyclerSearch = requireView().findViewById<RecyclerView>(R.id.recycler_images_search)
+        val recyclerSearch = binding.recyclerImagesSearch
 
         recyclerSearch.layoutManager = GridLayoutManager(context,3)
         recyclerSearch.adapter = adapter
 
         observe()
-
-        return binding
     }
+
+    override fun inflateBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentUserSearchBinding {
+        viewModel = ViewModelProvider(this).get(UserSearchViewModel::class.java)
+        return FragmentUserSearchBinding.inflate(inflater, container, false)
+    }
+
 
     private fun observe() {
         viewModel.imagesTattooUserSearch2.observe(viewLifecycleOwner) {
             adapter.updateImages(it)
+            adapter.notifyDataSetChanged()
         }
     }
 

@@ -8,7 +8,6 @@ class UserSearchViewModel : ViewModel() {
 
     private val imagesTattooUserSearch: MutableLiveData<List<String>> = MutableLiveData(
         listOf(
-       //lista de links das imagens
     ))
 
     val imagesTattooUserSearch2: LiveData<List<String>> = imagesTattooUserSearch

@@ -6,7 +6,7 @@ import android.os.Bundle
 class HomeUserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_home_user)
+        setContentView(R.layout.activity_home_user)
 
     }
 }

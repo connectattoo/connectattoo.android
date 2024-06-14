@@ -6,6 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import br.com.connectattoo.adapter.AdapterUserSearch
 import br.com.connectattoo.databinding.FragmentUserSearchBinding
 import br.com.connectattoo.ui.BaseFragment
 
@@ -21,8 +24,8 @@ class UserSearchFragment : BaseFragment<FragmentUserSearchBinding>() {
         searchView.visibility = View.VISIBLE
 
         val recyclerSearch = binding.recyclerImagesSearch
-
-        recyclerSearch.layoutManager = GridLayoutManager(context,3)
+        recyclerSearch.layoutManager = StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+        recyclerSearch.adapter = AdapterUserSearch()
 
     }
 
@@ -33,7 +36,6 @@ class UserSearchFragment : BaseFragment<FragmentUserSearchBinding>() {
         viewModel = ViewModelProvider(this).get(UserSearchViewModel::class.java)
         return FragmentUserSearchBinding.inflate(inflater, container, false)
     }
-
 
 
 }

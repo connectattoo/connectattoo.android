@@ -1,19 +1,41 @@
 package br.com.connectattoo.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Recycler
+import br.com.connectattoo.databinding.GridSearchBinding
 
-class AdapterUserSearch : RecyclerView.Adapter<UserSearchViewHolder>() {
+class AdapterUserSearch(private val myDataSet: MutableList<MyImage>) :
+    RecyclerView.Adapter<UserSearchViewHolder>() {
+    var i: Int = 0
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserSearchViewHolder {
-        TODO("Not yet implemented")
+        val item = GridSearchBinding.inflate(LayoutInflater.from(parent.context),
+            parent, false)
+        return UserSearchViewHolder(item)
     }
 
     override fun onBindViewHolder(holder: UserSearchViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(myDataSet[position])
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        return myDataSet.count()
     }
+
+    fun updateTattooImages(listImagesTattoo: MutableList<String>): MutableList<MyImage> {
+        for (image in listImagesTattoo) {
+            i++
+            if (i != 8) {
+                myDataSet.add(MyImage(image, false))
+            } else {
+                myDataSet.add(MyImage(image, true))
+            }
+        }
+        return myDataSet
+        notifyDataSetChanged()
+    }
+
+    data class MyImage(val tattooRandomImage: String, val isFullSpan: Boolean)
+
 }

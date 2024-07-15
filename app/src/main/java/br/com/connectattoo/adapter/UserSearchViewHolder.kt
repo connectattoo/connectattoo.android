@@ -1,7 +1,12 @@
 package br.com.connectattoo.adapter
 
-import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import br.com.connectattoo.databinding.GridSearchBinding
+import com.bumptech.glide.Glide
 
-class UserSearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class UserSearchViewHolder(private val bind: GridSearchBinding) : RecyclerView.ViewHolder(bind.root) {
+
+    fun bind(listImagesTattoo: AdapterUserSearch.MyImage) {
+        bind.imgTattooCard.apply { Glide.with(this).load(listImagesTattoo).into(this) }
+    }
 }

@@ -23,7 +23,7 @@ class AdapterUserSearch(private val myDataSet: MutableList<MyImage>) :
         return myDataSet.count()
     }
 
-    fun updateTattooImages(listImagesTattoo: MutableList<String>): MutableList<MyImage> {
+    fun updateTattooImages(listImagesTattoo: List<String>): MutableList<MyImage> {
         for (image in listImagesTattoo) {
             i++
             if (i != 8) {
@@ -32,8 +32,8 @@ class AdapterUserSearch(private val myDataSet: MutableList<MyImage>) :
                 myDataSet.add(MyImage(image, true))
             }
         }
-        return myDataSet
         notifyDataSetChanged()
+        return myDataSet
     }
 
     data class MyImage(val tattooRandomImage: String, val isFullSpan: Boolean)

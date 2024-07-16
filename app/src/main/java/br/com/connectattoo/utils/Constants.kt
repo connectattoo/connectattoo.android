@@ -4,6 +4,7 @@ object Constants {
     const val API_TOKEN = "API_TOKEN"
     const val API_USER_NAME = "USER_NAME"
     const val CODE_SUCCESS_200 = 200
+    const val CODE_SUCCESS_201 = 201
     const val CODE_SUCCESS_204 = 204
     const val CODE_ERROR_401 = 401
     const val CODE_ERROR_404 = 404
@@ -21,4 +22,5 @@ object Constants {
     const val TYPE_MORE_ITEMS_RANDOM_TATTOOS = 5
     const val DATABASE_NAME: String = "connectattoo"
     const val LIMIT_USER_SEARCH_QUERY = 9
+    const val BEARER: String = "Bearer"
 }

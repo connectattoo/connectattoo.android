@@ -19,6 +19,7 @@ import br.com.connectattoo.databinding.FragmentTattooClientProfileBinding
 import br.com.connectattoo.repository.ProfileRepository
 import br.com.connectattoo.ui.BaseFragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import kotlinx.coroutines.launch
 
 
@@ -76,8 +77,8 @@ class TattooClientProfileFragment : BaseFragment<FragmentTattooClientProfileBind
             setHasFixedSize(true)
             adapter = adapterListTagsProfile
         }
-        adapterListTagsProfile.listenerTagProfile = { Tag ->
-            Log.i(TAG, Tag.toString())
+        adapterListTagsProfile.listenerTagProfile = { tag ->
+            Log.i(TAG, tag.toString())
         }
         binding.rvMyGalleries.run {
             setHasFixedSize(true)
@@ -104,10 +105,14 @@ class TattooClientProfileFragment : BaseFragment<FragmentTattooClientProfileBind
                 .load(viewModel.state.userImage)
                 .circleCrop()
                 .placeholder(R.drawable.icon_person_profile)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(btnUserImage)
             Glide.with(ivImageTattooArtist)
                 .load(viewModel.state.imageTattooArtist)
                 .circleCrop()
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(ivImageTattooArtist)
             txtNameUser.text = viewModel.state.txtNameUser
             txtAgeAndName.text = viewModel.state.txtAgeAndName
@@ -118,6 +123,8 @@ class TattooClientProfileFragment : BaseFragment<FragmentTattooClientProfileBind
 
             Glide.with(ivImageTattooArtist).load(viewModel.state.imageTattooArtist).circleCrop()
                 .placeholder(R.drawable.icon_person_profile)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(ivImageTattooArtist)
 
         }
@@ -129,11 +136,13 @@ class TattooClientProfileFragment : BaseFragment<FragmentTattooClientProfileBind
             btnUserImage.setOnClickListener {
             }
             btnSettings.setOnClickListener {
+                findNavController().navigate(R.id.action_clientUserProfileFragment_to_tattooClientConfigurationFragment)
             }
             btnEditProfile.setOnClickListener {
                 findNavController().navigate(R.id.action_clientUserProfileFragment_to_tattooClientEditProfileFragment)
             }
             btnManageInterests.setOnClickListener {
+                findNavController().navigate(R.id.action_clientUserProfileFragment_to_tattoClientTagsFilterFragment)
             }
             btnManageNextAppointment.setOnClickListener {
             }

@@ -9,7 +9,11 @@
         android:id="@+id/homeUserFragment"
         android:name="br.com.connectattoo.ui.home.HomeUserFragment"
         android:label="fragment_home_user"
-        tools:layout="@layout/fragment_home_user" />
+        tools:layout="@layout/fragment_home_user" >
+        <action
+            android:id="@+id/action_homeUserFragment_to_profileTattooArtistDetailsFragment"
+            app:destination="@id/profileTattooArtistDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/clientUserProfileFragment"
         android:name="br.com.connectattoo.ui.profile.tattooclient.TattooClientProfileFragment"
@@ -19,6 +23,14 @@
             android:id="@+id/action_clientUserProfileFragment_to_tattooClientEditProfileFragment"
             app:destination="@id/tattooClientEditProfileFragment"
             app:enterAnim="@anim/slide_in_rigth" />
+        <action
+            android:id="@+id/action_clientUserProfileFragment_to_tattoClientTagsFilterFragment"
+            app:destination="@id/tattoClientTagsFilterFragment" />
+        <action
+            android:id="@+id/action_clientUserProfileFragment_to_tattooClientConfigurationFragment"
+            app:destination="@id/tattooClientConfigurationFragment"
+            app:enterAnim="@anim/slide_in_rigth"/>
+
     </fragment>
     <fragment
         android:id="@+id/tattooClientEditProfileFragment"
@@ -40,4 +52,24 @@
         android:name="br.com.connectattoo.ui.search.UserSearchFragment"
         android:label="fragment_user_search"
         tools:layout="@layout/fragment_user_search" />
+    <fragment
+        android:id="@+id/tattoClientTagsFilterFragment"
+        android:name="br.com.connectattoo.ui.profile.tattoclienttagfilter.TattooClientTagsFilterFragment"
+        android:label="fragment_tatto_client_tags_filter"
+        tools:layout="@layout/fragment_tattoo_client_tags_filter" />
+    <fragment
+        android:id="@+id/tattooClientConfigurationFragment"
+        android:name="br.com.connectattoo.ui.profile.tattooclientconfiguration.TattooClientConfigurationFragment"
+        android:label="fragment_tattoo_client_configuration"
+        tools:layout="@layout/fragment_tattoo_client_configuration" >
+        <action
+            android:id="@+id/action_tattooClientConfigurationFragment_to_clientUserProfileFragment"
+            app:destination="@id/clientUserProfileFragment"
+            app:enterAnim="@anim/slide_out_rigth"/>
+    </fragment>
+    <fragment
+        android:id="@+id/profileTattooArtistDetailsFragment"
+        android:name="br.com.connectattoo.ui.home.profiletattooartistdetails.ProfileTattooArtistDetailsFragment"
+        android:label="fragment_profile_tattoo_artist_details"
+        tools:layout="@layout/fragment_profile_tattoo_artist_details" />
 </navigation>

@@ -4,6 +4,7 @@ import br.com.connectattoo.api.response.ApiConfirmationResponse
 import br.com.connectattoo.api.response.TattooClientProfileResponse
 import br.com.connectattoo.data.ArtistData
 import br.com.connectattoo.data.ClientData
+import br.com.connectattoo.data.Tag
 import br.com.connectattoo.data.TokenData
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -56,4 +57,21 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Header("Authorization") authorization: String
     ): Call<String>
+
+    @PATCH("profile/me")
+    suspend fun updateProfile(
+        @Header("Authorization") authorization: String,
+        @Body fields: Map<String, String>
+    ) : Response<Unit>
+
+    @GET("tags")
+    suspend fun getAvailableTags(
+        @Header("Authorization") authorization: String
+    ): Response<List<Tag>>
+
+    @PATCH("profile/me/tags")
+    suspend fun saveTagsTattooClient(
+        @Header("Authorization") authorization: String,
+        @Body listTags: List<String>
+    ): Response<Unit>
 }

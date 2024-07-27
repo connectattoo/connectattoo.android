@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import br.com.connectattoo.ConnectattooApplication
 import br.com.connectattoo.R
 import br.com.connectattoo.adapter.AdapterListMyGalleries
@@ -17,10 +18,16 @@ import br.com.connectattoo.adapter.AdapterListTagsProfile
 import br.com.connectattoo.databinding.FragmentTattooClientProfileBinding
 import br.com.connectattoo.repository.ProfileRepository
 import br.com.connectattoo.ui.BaseFragment
+import br.com.connectattoo.utils.Constants
+import br.com.connectattoo.utils.UiState
+import br.com.connectattoo.utils.hideLoadingFragment
+import br.com.connectattoo.utils.showLoadingFragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 class TattooClientProfileFragment : BaseFragment<FragmentTattooClientProfileBinding>() {
     private lateinit var adapterListTagsProfile: AdapterListTagsProfile
     private var adapterListMyGalleries = AdapterListMyGalleries()
@@ -33,35 +40,52 @@ class TattooClientProfileFragment : BaseFragment<FragmentTattooClientProfileBind
         return FragmentTattooClientProfileBinding.inflate(inflater, container, false)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun setupViews() {
+        setupRecyclerView()
+        getInitialInformation()
+        observerViewModel()
+        setupBtnClicks()
+    }
+
+    private fun getInitialInformation() {
         val database = (requireActivity().application as ConnectattooApplication).database
         val clientProfileDao = database.tattooClientProfileDao()
         profileRepository = ProfileRepository(clientProfileDao)
-        viewModel.getInitialInformationTattooClientProfile(profileRepository)
-        setupRecyclerView()
-        setupBtnClicks()
-        observerViewModel()
+        viewLifecycleOwner.lifecycleScope.launch {
+            val startTime = System.currentTimeMillis()
+            viewModel.getInitialInformationTattooClientProfile(profileRepository)
+            val endTime = System.currentTimeMillis()
+            val durationMs = endTime - startTime
+
+            if (durationMs > 1) {
+                showLoadingFragment(binding.root, R.id.nav_user_fragment)
+                delay(Constants.INTERVAL_TIME_MILLIS_1500)
+            }
+        }
+
     }
+
 
     private fun observerViewModel() {
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiStateFlow.collect { uiState ->
                     when (uiState) {
-                        TattooClientProfileViewModel.UiState.Success -> {
+                        UiState.Success -> {
+                            hideLoadingFragment(binding.root)
                             insertInformationTattooClientProfile()
                         }
 
-                        TattooClientProfileViewModel.UiState.Error -> {
+                        UiState.Error -> {
+                            hideLoadingFragment(binding.root)
                         }
 
-                        TattooClientProfileViewModel.UiState.Loading -> {
-
+                        UiState.Loading -> {
                         }
 
                         else -> {
-
+                            hideLoadingFragment(binding.root)
                         }
                     }
                 }
@@ -75,8 +99,8 @@ class TattooClientProfileFragment : BaseFragment<FragmentTattooClientProfileBind
             setHasFixedSize(true)
             adapter = adapterListTagsProfile
         }
-        adapterListTagsProfile.listenerTagProfile = { Tag ->
-            Log.i(TAG, Tag.toString())
+        adapterListTagsProfile.listenerTagProfile = { tag ->
+            Log.i(TAG, tag.toString())
         }
         binding.rvMyGalleries.run {
             setHasFixedSize(true)
@@ -103,13 +127,17 @@ class TattooClientProfileFragment : BaseFragment<FragmentTattooClientProfileBind
                 .load(viewModel.state.userImage)
                 .circleCrop()
                 .placeholder(R.drawable.icon_person_profile)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(btnUserImage)
             Glide.with(ivImageTattooArtist)
                 .load(viewModel.state.imageTattooArtist)
                 .circleCrop()
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(ivImageTattooArtist)
             txtNameUser.text = viewModel.state.txtNameUser
-            txtAgeAndDisplayName.text = viewModel.state.txtAgeAndDisplayName
+            txtAgeAndName.text = viewModel.state.txtAgeAndName
             txtNameTattooArtist.text = viewModel.state.txtNameTattooArtist
             txtTattoArtistProfile.text = viewModel.state.txtTattooArtistProfile
             txtScheduleTomorrow.text = viewModel.state.txtScheduleTomorrow
@@ -117,6 +145,8 @@ class TattooClientProfileFragment : BaseFragment<FragmentTattooClientProfileBind
 
             Glide.with(ivImageTattooArtist).load(viewModel.state.imageTattooArtist).circleCrop()
                 .placeholder(R.drawable.icon_person_profile)
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(ivImageTattooArtist)
 
         }
@@ -128,10 +158,13 @@ class TattooClientProfileFragment : BaseFragment<FragmentTattooClientProfileBind
             btnUserImage.setOnClickListener {
             }
             btnSettings.setOnClickListener {
+                findNavController().navigate(R.id.action_clientUserProfileFragment_to_tattooClientConfigurationFragment)
             }
             btnEditProfile.setOnClickListener {
+                findNavController().navigate(R.id.action_clientUserProfileFragment_to_tattooClientEditProfileFragment)
             }
             btnManageInterests.setOnClickListener {
+                findNavController().navigate(R.id.action_clientUserProfileFragment_to_tattoClientTagsFilterFragment)
             }
             btnManageNextAppointment.setOnClickListener {
             }

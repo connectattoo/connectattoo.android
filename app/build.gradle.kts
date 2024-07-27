@@ -82,6 +82,7 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.6.4")
     implementation ("com.squareup.retrofit2:converter-gson:2.6.4")
     implementation ("com.squareup.retrofit2:converter-scalars:2.4.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
 
     //Swipe Refresh
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
@@ -103,6 +104,8 @@ dependencies {
     //Masks
     implementation ("com.github.santalu:maskara:1.0.0")
 
+    //Flexbox
+    implementation ("com.google.android.flexbox:flexbox:3.0.0")
 }
 kapt {
     correctErrorTypes = true

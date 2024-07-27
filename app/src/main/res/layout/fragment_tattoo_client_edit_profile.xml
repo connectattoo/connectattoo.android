@@ -76,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_photo_client" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_display_name"
+        android:id="@+id/til_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_16dp"
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_edit_client_photo">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_display_name"
+            android:id="@+id/et_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
@@ -119,7 +119,7 @@
         app:hintTextColor="@color/black500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/til_display_name">
+        app:layout_constraintTop_toBottomOf="@+id/til_name">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/et_user_name"
@@ -142,6 +142,7 @@
         android:textColorHint="@color/black500"
         app:boxBackgroundColor="@android:color/transparent"
         app:boxStrokeWidth="0dp"
+        android:enabled="false"
         app:boxStrokeWidthFocused="0dp"
         app:cursorColor="@color/purple500"
         app:hintTextColor="@color/black500"
@@ -154,6 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
+            android:enabled="false"
             android:fontFamily="@font/raleway_medium"
             android:hint="@string/et_email"
             android:inputType="textEmailAddress" />
@@ -190,4 +192,19 @@
             app:maskStyle="normal" />
     </com.google.android.material.textfield.TextInputLayout>
 
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_upload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_24dp"
+        android:layout_marginHorizontal="@dimen/margin_16dp"
+        android:background="@drawable/bg_butao_criar_conta"
+        android:text="Salvar"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="@+id/til_birth_date"
+        app:layout_constraintStart_toStartOf="@+id/til_birth_date"
+        app:layout_constraintTop_toBottomOf="@+id/til_birth_date"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

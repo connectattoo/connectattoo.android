@@ -13,6 +13,7 @@ import br.com.connectattoo.repository.ProfileRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -27,6 +28,9 @@ class TattooClientEditProfileViewModel : ViewModel() {
 
     private val _imageUri = MutableLiveData<Uri>()
     val imageUri: LiveData<Uri> = _imageUri
+
+    private val _message = MutableLiveData<String?>()
+    val message: LiveData<String?> = _message
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getInitialInformationTattooClientProfile(profileRepository: ProfileRepository) {
@@ -44,11 +48,10 @@ class TattooClientEditProfileViewModel : ViewModel() {
                     _dataState = _dataState.copy(
                         birthDate = birthDate,
                         imageProfile = clientProfile.imageProfile,
-                        displayName = clientProfile.displayName,
+                        name = clientProfile.name,
                         email = clientProfile.email,
                         username = clientProfile.username
                     )
-
                     _uiStateFlow.value = UiState.Success
                 }
             }
@@ -79,6 +82,33 @@ class TattooClientEditProfileViewModel : ViewModel() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun uploadClientProfilePhoto(
+        profileRepository: ProfileRepository,
+        token: String,
+        image: MultipartBody.Part
+    ) {
+
+        viewModelScope.launch {
+            _uiStateFlow.value = UiState.Loading
+            val result = profileRepository.uploadProfilePhoto(token, image)
+
+            result.collect { resultUpload ->
+                if (resultUpload.error != null) {
+                    _dataState =
+                        _dataState.copy(stateError = resultUpload.data.toString())
+                    _message.value = resultUpload.error.let { it?.message.toString() }
+                    _uiStateFlow.value = UiState.Error
+                }
+                resultUpload.data?.let { message ->
+                    _message.value = message
+                    getInitialInformationTattooClientProfile(profileRepository)
+                    _uiStateFlow.value = UiState.Success
+                }
+            }
+        }
+    }
+
     private fun transformBirthDate(birthDate: String?): String? {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val outputFormat = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
@@ -91,8 +121,67 @@ class TattooClientEditProfileViewModel : ViewModel() {
             null
         }
     }
+
+    private fun transformBirthDateForApi(birthDate: String): String? {
+        val inputFormat = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        return try {
+            val date = birthDate.let { inputFormat.parse(it) }
+            outputFormat.format(date ?: "")
+        } catch (error: IOException) {
+            Log.i(TAG, error.message.toString())
+            null
+        }
+    }
+
     fun setImageUri(uri: Uri) {
         _imageUri.value = uri
+    }
+
+    fun updateClientProfile(
+        profileRepository: ProfileRepository,
+        token: String,
+        name: String,
+        username: String,
+        birthDate: String
+    ) {
+
+        val map = checkFieldChange(name, username, birthDate)
+        if (map.isNotEmpty()) {
+            viewModelScope.launch {
+                val result = profileRepository.updateClientProfile(token, map)
+                _message.value = result.data.toString()
+            }
+
+        }
+
+    }
+
+    private fun checkFieldChange(
+        name: String,
+        //email: String,
+        username: String, birthDate: String
+    ): Map<String, String> {
+        val map = mutableMapOf<String, String>()
+        if (name != _dataState.name) {
+            map["name"] = name
+        }
+        /*if (email != _dataState.email) {
+            map["email"] = email
+        }*/
+        if (username != _dataState.username) {
+            map["username"] = username
+        }
+        if (birthDate != _dataState.birthDate) {
+            val dateForApi = transformBirthDateForApi(birthDate)
+            if (dateForApi != null) {
+                map["birthDate"] = dateForApi
+            }
+        }
+
+        return map
+
     }
 
     sealed class UiState {

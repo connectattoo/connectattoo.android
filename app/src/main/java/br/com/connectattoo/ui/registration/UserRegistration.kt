@@ -19,10 +19,11 @@ import br.com.connectattoo.api.ApiService
 import br.com.connectattoo.api.ApiUrl
 import br.com.connectattoo.data.TokenData
 import br.com.connectattoo.ui.BaseFragment
-import br.com.connectattoo.util.Constants.API_TOKEN
-import br.com.connectattoo.util.Constants.CODE_ERROR_404
-import br.com.connectattoo.util.Constants.CODE_ERROR_409
-import br.com.connectattoo.util.DataStoreManager
+import br.com.connectattoo.utils.Constants.API_TOKEN
+import br.com.connectattoo.utils.Constants.CODE_ERROR_404
+import br.com.connectattoo.utils.Constants.CODE_ERROR_409
+import br.com.connectattoo.utils.DataStoreManager
+import br.com.connectattoo.utils.hideLoadingFragment
 import com.github.rtoshiro.util.format.SimpleMaskFormatter
 import com.github.rtoshiro.util.format.text.MaskTextWatcher
 import com.google.android.material.snackbar.Snackbar
@@ -214,6 +215,7 @@ abstract class UserRegistration<T : ViewBinding> : BaseFragment<T>() {
         } else {
             handleErrorResponse(response)
         }
+        hideLoadingFragment(binding.root)
     }
 
     private fun handleSuccessfulResponse(action: Int, response: Response<TokenData>) {
@@ -268,7 +270,7 @@ abstract class UserRegistration<T : ViewBinding> : BaseFragment<T>() {
 
     companion object {
         const val MIN_PASSWORD_LENGTH = 8
-        const val HAS_SPECIAL_SYMBOL = "^(?=.*[_.*=!%()$&@+-/#]).*$"
+        const val HAS_SPECIAL_SYMBOL = "^(?=.*[!?.,;:_.*=!%()$&@+-/#]).*$"
         const val HAS_UPPER_CASE = ".*[A-Z].*"
         const val HAS_LOWER_CASE = ".*[a-z].*"
         const val HAS_NUMBER = ".*[0-9].*"

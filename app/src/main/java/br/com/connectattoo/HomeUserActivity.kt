@@ -42,6 +42,8 @@ class HomeUserActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.homeTrue.isVisible = destination.id == R.id.homeUserFragment
             binding.profileTrue.isVisible = destination.id == R.id.clientUserProfileFragment
+            binding.chatTrue.isVisible = destination.id == R.id.userChatFragment
+            binding.explorarTrue.isVisible = destination.id == R.id.userSearchFragment
         }
 
         binding.homeFalse.setOnClickListener {

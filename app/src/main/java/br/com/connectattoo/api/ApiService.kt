@@ -18,6 +18,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -50,6 +51,12 @@ interface ApiService {
         @Header("Authorization") authorization: String,
         @Part image: MultipartBody.Part
     ): Response<Unit>
+
+    @GET("tattoos/random")
+    suspend fun getRandomTattoos(
+        @Query("limit") limit: Int,
+        @Header("Authorization") authorization: String
+    ): Call<String>
 
     @PATCH("profile/me")
     suspend fun updateProfile(

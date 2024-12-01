@@ -166,6 +166,7 @@ class TattooArtistRegistrationFragment :
             this.setBackgroundValid(this.street)
         } else {
             this.setBackgroundInvalid(this.street)
+            showValidationError("Campo 'Rua' deve conter apenas letras e números")
         }
     }
 
@@ -184,6 +185,7 @@ class TattooArtistRegistrationFragment :
             this.setBackgroundValid(this.city)
         } else {
             this.setBackgroundInvalid(this.city)
+            showValidationError("Campo 'Cidade' deve conter apenas letras")
         }
     }
 
@@ -193,6 +195,7 @@ class TattooArtistRegistrationFragment :
             this.setBackgroundValid(this.state)
         } else {
             this.setBackgroundInvalid(this.state)
+            showValidationError("Campo 'Estado' deve conter apenas letras")
         }
     }
 
@@ -201,7 +204,8 @@ class TattooArtistRegistrationFragment :
     }
 
     private fun isStreetValid(street: String): Boolean {
-        return street.isNotEmpty()
+        val streetPattern = HAS_SPECIAL_SYMBOL.toRegex()
+        return street.isNotEmpty() && (!street.matches(streetPattern))
     }
 
     private fun isNumberValid(number: String): Boolean {
@@ -209,11 +213,15 @@ class TattooArtistRegistrationFragment :
     }
 
     private fun isCityValid(city: String): Boolean {
-        return city.isNotEmpty()
+        val simbolCityPattern = HAS_SPECIAL_SYMBOL.toRegex()
+        val numberCityPattern = HAS_NUMBER.toRegex()
+        return city.isNotEmpty() && (!city.matches(simbolCityPattern) && !city.matches(numberCityPattern))
     }
 
     private fun isStateValid(state: String): Boolean {
-        return state.isNotEmpty()
+        val simbolStatePattern = HAS_SPECIAL_SYMBOL.toRegex()
+        val numberStatePattern = HAS_NUMBER.toRegex()
+        return state.isNotEmpty() && (!state.matches(simbolStatePattern) && !state.matches(numberStatePattern))
     }
 
     override fun conditionChecking(view: View) {
